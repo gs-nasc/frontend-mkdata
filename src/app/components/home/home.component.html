@@ -1,0 +1,83 @@
+<div class="min-w-full min-h-screen py-4 bg-gray-900">
+  <div class="grid grid-cols-12 gap-4 p-4 md:px-32">
+    <h1 class="col-span-10 text-2xl font-bold text-white uppercase">Gerenciamento de Clientes</h1>
+    <a class="col-span-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 text-center"
+      routerLink="/cliente" routerLinkActive="active" ariaCurrentWhenActive="page">Adicionar Cliente</a>
+  </div>
+  <hr class="mt-2 border-gray-800">
+  <!-- FILTER -->
+  <div class="grid grid-cols-8 gap-4 mx-4 mt-6 md:mx-32">
+    <div class="col-span-2">
+      <input placeholder="Nome" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (keyup)="filterByName($event)">
+    </div>
+    <div class="flex col-span-1">
+      <div class="flex items-center mr-4">
+        <input checked id="default-checkbox" type="checkbox" name="ativo" (change)="onChangeCheckBox($event)"
+          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+        <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ativo</label>
+      </div>
+      <div class="flex items-center">
+        <input checked id="checked-checkbox" type="checkbox" name="inativo" (change)="onChangeCheckBox($event)"
+          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+        <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Inativo</label>
+      </div>
+    </div>
+  </div>
+  <!-- TABLE -->
+  <div class="mx-4 mt-6 bg-gray-800 rounded-xl md:mx-32">
+    <!-- LINES -->
+    <div class="grid grid-cols-6 gap-4 p-4 border-b border-gray-700 cursor-pointer md:grid-cols-8 rounded-t-xl">
+      <div class="col-span-1 font-bold text-gray-200 uppercase text-md">ID</div>
+      <div class="col-span-4 font-bold text-gray-200 uppercase text-md md:col-span-3">Nome</div>
+      <div class="hidden col-span-2 font-bold text-gray-200 uppercase text-md md:flex">Documento</div>
+      <div class="hidden col-span-1 font-bold text-gray-200 uppercase text-md md:flex">Status</div>
+      <div class="col-span-1 font-bold text-gray-200 uppercase text-md">
+        <svg class="w-6 h-6 md:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+          </path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+          </path>
+        </svg>
+        <span class="hidden md:block">AÇÕES</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-6 gap-4 p-4 border-b border-gray-700 md:grid-cols-8 hover:bg-gray-700"
+      *ngFor="let cliente of clientes;let i = index">
+      <div class="flex items-center justify-end col-span-1 font-bold text-gray-200 uppercase text-md">{{ cliente.id }}
+      </div>
+      <div class="flex items-center col-span-4 font-bold text-gray-200 uppercase text-md md:col-span-3">{{ cliente.nome
+        }}</div>
+      <div class="items-center hidden col-span-2 font-bold text-gray-200 uppercase text-md md:flex">{{ cliente.tipo }}
+        {{ cliente.document }}</div>
+      <div class="items-center hidden col-span-1 font-bold text-gray-200 uppercase text-md md:flex"
+        *ngIf="!cliente.active">Inativo</div>
+      <div class="items-center hidden col-span-1 font-bold text-gray-200 uppercase text-md md:flex"
+        *ngIf="cliente.active">Ativo</div>
+      <div
+        class="flex items-center justify-between col-span-1 font-bold text-gray-200 uppercase text-md md:justify-start">
+        <a routerLink="/cliente/{{ cliente.id }}" routerLinkActive="active" ariaCurrentWhenActive="page">
+          <svg class="w-6 h-6 mr-4 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+            </path>
+          </svg>
+        </a>
+        <button (click)="deleteItem(cliente.id)">
+          <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="grid grid-cols-8 p-4 cursor-pointer rounded-b-xl">
+      <div class="col-span-8 font-bold text-right text-gray-200 uppercase text-md">{{ qtdClientes }} Registros
+        Encontrados</div>
+    </div>
+  </div>
+</div>
